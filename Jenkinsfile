@@ -155,14 +155,13 @@ EOF
                             ssh -o StrictHostKeyChecking=no \
                                 ${EC2_USER}@${EC2_HOST} '
                             
-                            echo "🚀 병원 프로젝트 DuckDNS + 모니터링 배포 시작..."
+                            echo "🚀 병원 프로젝트 및 모니터링 배포 시작..."
                             
                             # Docker 이미지 로드
                             echo "📦 Docker 이미지 로드 중..."
                             docker load < /home/ec2-user/backend.tar.gz
                             
-                            # 필요한 디렉토리 생성
-                            sudo mkdir -p /opt/hospital/config/duckdns
+                            # 필요한 디렉토리 생성 (DuckDNS 제거됨)
                             sudo mkdir -p /opt/hospital/config/prometheus
                             sudo mkdir -p /opt/hospital/monitoring/prometheus/config
                             sudo mkdir -p /opt/hospital/monitoring/prometheus/data
@@ -395,8 +394,6 @@ DASHBOARD_CONFIG
                             # 환경변수 확인
                             echo "📋 배포 환경 설정:"
                             echo "  환경: production"
-                            echo "  DuckDNS 도메인: ${DUCKDNS_DOMAIN}"
-                            echo "  DuckDNS 서브도메인: ${DUCKDNS_SUBDOMAIN}"
                             echo "  백엔드 포트: 8888"
                             echo "  DB 포트: 3500"
                             echo "  프로메테우스 포트: 9090"
