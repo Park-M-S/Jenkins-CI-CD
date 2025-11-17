@@ -36,5 +36,6 @@ logs/
 *.temp
 # Maven configuration
 # Properties files
-*.properties
+api.properties
+db.properties
 
