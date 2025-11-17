@@ -63,7 +63,7 @@ pipeline {
                 script {
                     echo '📝 API Properties 파일 생성 중...'
                     sh """
-                        cat > hospital_main/src/main/resources/api.properties << 'EOF'
+                        cat > hospital_main/src/main/resources/api.properties <<EOF
 # Hospital API Keys
 hospital.main.api.key=${HOSPITAL_MAIN_API_KEY}
 hospital.detail.api.key=${HOSPITAL_DETAIL_API_KEY}
@@ -152,8 +152,7 @@ EOF
                     echo '🚀 EC2 서버에 배포 시작...'
                     sshagent(credentials: ['EC2_PRIVATE_KEY']) {
                         sh """
-                            ssh -o StrictHostKeyChecking=no \
-                                ${EC2_USER}@${EC2_HOST} '
+                            ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '
                             
                             echo "🚀 병원 프로젝트 및 모니터링 배포 시작..."
                             
@@ -161,7 +160,7 @@ EOF
                             echo "📦 Docker 이미지 로드 중..."
                             docker load < /home/ec2-user/backend.tar.gz
                             
-                            # 필요한 디렉토리 생성 (DuckDNS 제거됨)
+                            # 필요한 디렉토리 생성
                             sudo mkdir -p /opt/hospital/config/prometheus
                             sudo mkdir -p /opt/hospital/monitoring/prometheus/config
                             sudo mkdir -p /opt/hospital/monitoring/prometheus/data
@@ -171,7 +170,7 @@ EOF
                             sudo chown -R ec2-user:ec2-user /opt/hospital/
                             
                             # .env 파일 생성
-                            cat > .env << EOF
+                            cat > .env <<EOF
 ENVIRONMENT=production
 IMAGE_TAG=latest
 
@@ -224,7 +223,6 @@ GEMINI_API_MODEL=${GEMINI_API_MODEL}
 
 # Chatbot 설정
 CHATBOT_SYSTEM_PROMPT_FILE=${CHATBOT_SYSTEM_PROMPT_FILE}
-
 EOF
                             
                             # Prometheus 설정 파일 생성
@@ -444,7 +442,7 @@ DASHBOARD_CONFIG
                               --path.procfs=/host/proc \
                               --path.rootfs=/rootfs \
                               --path.sysfs=/host/sys \
-                              --collector.filesystem.mount-points-exclude='"'"'^/(sys|proc|dev|host|etc)($$|/)'"'"'
+                              --collector.filesystem.mount-points-exclude='"'"'^/(sys|proc|dev|host|etc)(\$|/)'"'"'
                             
                             # Prometheus 실행
                             docker run -d \
@@ -488,7 +486,7 @@ DASHBOARD_CONFIG
                             rm -f /home/ec2-user/*.tar.gz
                             
                             echo "✅ 배포 완료!"
-                        '
+                            '
                         """
                     }
                     echo '✅ 배포 완료'
@@ -502,8 +500,7 @@ DASHBOARD_CONFIG
                     echo '🏥 서비스 헬스체크 시작...'
                     sshagent(credentials: ['EC2_PRIVATE_KEY']) {
                         sh """
-                            ssh -o StrictHostKeyChecking=no \
-                                ${EC2_USER}@${EC2_HOST} '
+                            ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '
                             
                             echo "🏥 서비스 헬스체크 시작..."
                             
@@ -579,7 +576,7 @@ DASHBOARD_CONFIG
                             echo "  📈 그라파나: http://${EC2_HOST}:3000"
                             echo "  🖥️ Node Exporter: http://${EC2_HOST}:9100"
                             echo "  📦 cAdvisor: http://${EC2_HOST}:8080"
-                        '
+                            '
                         """
                     }
                 }
@@ -596,8 +593,7 @@ DASHBOARD_CONFIG
             script {
                 sshagent(credentials: ['EC2_PRIVATE_KEY']) {
                     sh """
-                        ssh -o StrictHostKeyChecking=no \
-                            ${EC2_USER}@${EC2_HOST} '
+                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '
                         
                         echo "❌ 배포 실패! 롤백 시도..."
                         
@@ -616,7 +612,7 @@ DASHBOARD_CONFIG
                         rm -f /home/ec2-user/*.tar.gz
                         
                         echo "🔄 이전 버전으로 롤백하거나 수동으로 문제를 해결하세요."
-                    '
+                        '
                     """
                 }
             }
