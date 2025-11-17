@@ -629,4 +629,8 @@ DASHBOARD_CONFIG
             sh 'rm -f backend.tar.gz || true'
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 156bcab (first commit)
